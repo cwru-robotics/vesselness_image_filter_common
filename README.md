@@ -25,6 +25,11 @@ The filter has several parameters that can be configured using rqt_reconfigure.
 
 The CPU based filter and viewer will operate with ROS and OpenCV. If GPU functionality is desired, OpenCV must be recompiled with CUDA support on a CUDA capable GPU.
 
+Follow the instructions in "Building OpenCV With CUDA.pdf"
+
+Then make sure you have the modified compatibility version of vision_opencv:
+```git clone https://github.com/cwru-robotics/vision_opencv.git -b kinetic```
+
 ## License
 
 This package is licensed under the BSD-3-Clause. 

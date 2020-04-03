@@ -2,13 +2,25 @@ cmake_minimum_required(VERSION 2.8.3)
 project(vesselness_image_filter)
 
 # Find system packages...
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 3 REQUIRED
+COMPONENTS
+    opencv_core
+    opencv_highgui
+    opencv_imgproc
+    opencv_imgcodecs
+    opencv_cudaarithm
+    opencv_cudaimgproc
+    opencv_cudafilters
+  PATHS /usr/local
+  NO_DEFAULT_PATH
+  CONFIG
+)
 find_package(CUDA)
 
 
 # Find catkin packages...
 find_package(catkin REQUIRED COMPONENTS
-  cv_bridge
+  cv_bridge_compat
   image_transport
   roscpp
   sensor_msgs
@@ -38,7 +50,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
     INCLUDE_DIRS include
     LIBRARIES vesselness_lib
-    CATKIN_DEPENDS dynamic_reconfigure image_transport cv_bridge
+    CATKIN_DEPENDS dynamic_reconfigure image_transport cv_bridge_compat
 )
 
 # Validate that cuda is available and built into opencv.
