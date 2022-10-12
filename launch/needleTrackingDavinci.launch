@@ -1,0 +1,70 @@
+<launch>
+  
+  <!-- Launch daVinci endoscope -->
+   <!-- Launch daVinci node   -->      
+   <!--include file="$(find hw_camera)/launch/run_camera.launch">
+   	<arg name="CAL_CODE" value="cwru"/>
+   </include-->
+
+
+
+     <node name="vesselness_left" pkg="vesselness_image_filter" type="vesselness_image_filter_gpu_node">
+      <remap from="image_in" to="/davinci_endo/left/image_raw" />  
+      <remap from="image_thin" to="/stereo/left/image_vesselness"/> 
+        <param name="beta" type="double" value="0.47"/>
+        <param name="c" type="double" value="0.0015"/>
+        <param name="side_h" type="int" value="7"/>
+        <param name="side_p" type="int" value="5"/>
+        <param name="variance_h" type="double" value="2.2"/>
+        <param name="variance_p" type="double" value="0.2"/>
+    </node>
+        
+     
+    <node name="vesselness_right" pkg="vesselness_image_filter" type="vesselness_image_filter_gpu_node">
+      <remap from="image_in" to="/davinci_endo/right/image_raw" />  
+      <remap from="image_thin" to="/stereo/right/image_vesselness"/>
+        <param name="beta" type="double" value="0.47"/>
+        <param name="c" type="double" value="0.0015"/>
+        <param name="side_h" type="int" value="7"/>
+        <param name="side_p" type="int" value="5"/>
+        <param name="variance_h" type="double" value="2.2"/>
+        <param name="variance_p" type="double" value="0.2"/> 
+    </node>
+  
+ <!-- OLD 
+ 
+ <node name="vesselness_right" pkg="vesselness_image_filter" type="vesselness_image_filter_gpu_node">
+      <remap from="image_in" to="/davinci_endo/right/image_rect_color" />  
+      <remap from="image_thin" to="/stereo/right/image_vesselness"/>
+        <param name="beta" type="double" value="0.5"/>
+        <param name="c" type="double" value="0.0005"/>
+        <param name="side_h" type="int" value="7"/>
+        <param name="side_p" type="int" value="5"/>
+        <param name="variance_h" type="double" value="2.1"/>
+        <param name="variance_p" type="double" value="1.0"/> 
+    </node>
+ --> 
+  
+<!-- -->
+    <node name="vessel_view_right" pkg="vesselness_image_filter" type="vesselness_image_viewer_cpu_node">
+         <remap from="image_thin" to="/stereo/right/image_vesselness" />
+      </node>
+      <node name="vessel_view_left" pkg="vesselness_image_filter" type="vesselness_image_viewer_cpu_node">
+         <remap from="image_thin" to="/stereo/left/image_vesselness" />
+      </node>
+
+
+<!--       
+
+   <node pkg="image_view" type="image_view" name="left_view" >
+      <remap from="image" to="/stereo_example/left/image_rect_color" />
+    </node>
+
+    <node pkg="image_view" type="image_view" name="right_view" >
+      <remap from="image" to="/stereo_example/right/image_rect_color" />
+    </node> --> 
+  
+
+
+  
+</launch>
