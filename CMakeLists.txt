@@ -2,25 +2,25 @@ cmake_minimum_required(VERSION 2.8.3)
 project(vesselness_image_filter)
 
 # Find system packages...
-find_package(OpenCV 3 REQUIRED
+find_package(OpenCV REQUIRED
 COMPONENTS
     opencv_core
     opencv_highgui
     opencv_imgproc
     opencv_imgcodecs
-    opencv_cudaarithm
-    opencv_cudaimgproc
-    opencv_cudafilters
+    #opencv_cudaarithm
+    #opencv_cudaimgproc
+    #opencv_cudafilters
   PATHS /usr/local
   NO_DEFAULT_PATH
   CONFIG
 )
-find_package(CUDA)
+#find_package(CUDA)
 
 
 # Find catkin packages...
 find_package(catkin REQUIRED COMPONENTS
-  cv_bridge_compat
+  cv_bridge
   image_transport
   roscpp
   sensor_msgs
@@ -50,22 +50,22 @@ generate_dynamic_reconfigure_options(
 catkin_package(
     INCLUDE_DIRS include
     LIBRARIES vesselness_lib
-    CATKIN_DEPENDS dynamic_reconfigure image_transport cv_bridge_compat
+    CATKIN_DEPENDS dynamic_reconfigure image_transport cv_bridge
 )
 
 # Validate that cuda is available and built into opencv.
-if(CUDA_FOUND)
-  message("...Found CUDA ${CUDA_VERSION}")
-  if(OpenCV_CUDA_VERSION) 
-    message("...Opencv compiled with cuda version ${OpenCV_CUDA_VERSION}")
-  endif()
-endif()
+#if(CUDA_FOUND)
+#  message("...Found CUDA ${CUDA_VERSION}")
+#  if(OpenCV_CUDA_VERSION) 
+#    message("...Opencv compiled with cuda version ${OpenCV_CUDA_VERSION}")
+#  endif()
+#endif()
 
 
 # If necessary set the nvidia build flags for the GPU architecture.
-if(CUDA_FOUND AND OpenCV_CUDA_VERSION)
-  SET(CUDA_NVCC_FLAGS "-arch=compute_30" CACHE STRING "nvcc flags" FORCE)
-endif()
+#if(CUDA_FOUND AND OpenCV_CUDA_VERSION)
+#  SET(CUDA_NVCC_FLAGS "-arch=compute_30" CACHE STRING "nvcc flags" FORCE)
+#endif()
 
 
 # Include directory path
@@ -128,35 +128,35 @@ add_dependencies(vesselness_lib ${PROJECT_NAME}_gencfg)
 
 
 # Add the cuda libraries.
-if(CUDA_FOUND AND OpenCV_CUDA_VERSION)
+#if(CUDA_FOUND AND OpenCV_CUDA_VERSION)
 
   # The dirtectional GPU filter
-  cuda_add_library(vesselness_image_filter_gpu_lib
-    src/gpu/cu/vesselness_image_filter_gpu.cu
-  )
+ # cuda_add_library(vesselness_image_filter_gpu_lib
+  #  src/gpu/cu/vesselness_image_filter_gpu.cu
+  #)
 
-  target_link_libraries(vesselness_image_filter_gpu_lib
-    vesselness_image_filter_common_lib
-    ${CUDA_LIBRARIES}
-    ${OpenCV_LIBRARIES}
-    ${catkin_LIBRARIES}
-  )
+  #target_link_libraries(vesselness_image_filter_gpu_lib
+   # vesselness_image_filter_common_lib
+    #${CUDA_LIBRARIES}
+    #${OpenCV_LIBRARIES}
+    #${catkin_LIBRARIES}
+  #)
 
-  add_dependencies(vesselness_image_filter_gpu_lib ${PROJECT_NAME}_gencfg)
+  #add_dependencies(vesselness_image_filter_gpu_lib ${PROJECT_NAME}_gencfg)
 
 
   # GPU Viewer Library
-  cuda_add_library(vesselness_viewer_gpu_lib
-    src/gpu/cu/vesselness_viewer_kernel.cu
-  )
+  #cuda_add_library(vesselness_viewer_gpu_lib
+   # src/gpu/cu/vesselness_viewer_kernel.cu
+  #)
 
-  target_link_libraries(vesselness_viewer_gpu_lib
-    ${CUDA_LIBRARIES}
-    ${OpenCV_LIBRARIES}
-    ${catkin_LIBRARIES}
-  )
+  #target_link_libraries(vesselness_viewer_gpu_lib
+   # ${CUDA_LIBRARIES}
+    #${OpenCV_LIBRARIES}
+    #${catkin_LIBRARIES}
+  #)
 
-endif()
+#endif()
 
 # Finished the libraries: add the executables.
 
@@ -196,35 +196,35 @@ target_link_libraries(vesselness_image_viewer_cpu_node
 )
 
 # only add the cuda executables if necessary:
-if(CUDA_FOUND AND OpenCV_CUDA_VERSION)
+#if(CUDA_FOUND AND OpenCV_CUDA_VERSION)
   
   # GPU filter:
-  cuda_add_executable(vesselness_image_filter_gpu_node
-    src/gpu/cpp/vesselness_image_filter_gpu_node.cpp
-  )
+#  cuda_add_executable(vesselness_image_filter_gpu_node
+ #   src/gpu/cpp/vesselness_image_filter_gpu_node.cpp
+  #)
 
-  target_link_libraries(vesselness_image_filter_gpu_node
-    vesselness_image_filter_common_lib
-    vesselness_image_filter_gpu_lib
-    ${CUDA_LIBRARIES}
-    ${OpenCV_LIBRARIES}
-    ${catkin_LIBRARIES}
-  )   
+  #target_link_libraries(vesselness_image_filter_gpu_node
+   # vesselness_image_filter_common_lib
+    #vesselness_image_filter_gpu_lib
+#    ${CUDA_LIBRARIES}
+ #   ${OpenCV_LIBRARIES}
+  #  ${catkin_LIBRARIES}
+  #)   
 
   # GPU viewer:
-  cuda_add_executable(vesselness_image_viewer_gpu_node
-    src/gpu/cpp/vesselness_image_viewer_gpu_node.cpp
-  )
+  #cuda_add_executable(vesselness_image_viewer_gpu_node
+  #  src/gpu/cpp/vesselness_image_viewer_gpu_node.cpp
+  #)
 
-  target_link_libraries(vesselness_image_viewer_gpu_node
-    vesselness_viewer_gpu_lib
-    vesselness_image_filter_common_lib
-    ${CUDA_LIBRARIES}
-    ${OpenCV_LIBRARIES}
-    ${catkin_LIBRARIES}
-  )
+  #target_link_libraries(vesselness_image_viewer_gpu_node
+   # vesselness_viewer_gpu_lib
+    #vesselness_image_filter_common_lib
+#    ${CUDA_LIBRARIES}
+ #   ${OpenCV_LIBRARIES}
+  #  ${catkin_LIBRARIES}
+  #)
 
-endif()
+#endif()
 
 # installation path:
 install(

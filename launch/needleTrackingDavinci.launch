@@ -8,7 +8,7 @@
 
 
 
-     <node name="vesselness_left" pkg="vesselness_image_filter" type="vesselness_image_filter_gpu_node">
+     <node name="vesselness_left" pkg="vesselness_image_filter" type="vesselness_image_filter_cpu_node">
       <remap from="image_in" to="/davinci_endo/left/image_raw" />  
       <remap from="image_thin" to="/stereo/left/image_vesselness"/> 
         <param name="beta" type="double" value="0.47"/>
@@ -20,7 +20,7 @@
     </node>
         
      
-    <node name="vesselness_right" pkg="vesselness_image_filter" type="vesselness_image_filter_gpu_node">
+    <node name="vesselness_right" pkg="vesselness_image_filter" type="vesselness_image_filter_cpu_node">
       <remap from="image_in" to="/davinci_endo/right/image_raw" />  
       <remap from="image_thin" to="/stereo/right/image_vesselness"/>
         <param name="beta" type="double" value="0.47"/>
@@ -33,7 +33,7 @@
   
  <!-- OLD 
  
- <node name="vesselness_right" pkg="vesselness_image_filter" type="vesselness_image_filter_gpu_node">
+ <node name="vesselness_right" pkg="vesselness_image_filter" type="vesselness_image_filter_cpu_node">
       <remap from="image_in" to="/davinci_endo/right/image_rect_color" />  
       <remap from="image_thin" to="/stereo/right/image_vesselness"/>
         <param name="beta" type="double" value="0.5"/>
