@@ -11,9 +11,9 @@ COMPONENTS
     #opencv_cudaarithm
     #opencv_cudaimgproc
     #opencv_cudafilters
-  PATHS /usr/local
-  NO_DEFAULT_PATH
-  CONFIG
+  #PATHS /usr/local
+  #NO_DEFAULT_PATH
+  #CONFIG
 )
 #find_package(CUDA)
 
