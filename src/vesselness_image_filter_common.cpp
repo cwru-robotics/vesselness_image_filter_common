@@ -42,6 +42,28 @@
 #include <string>
 #include "vesselness_image_filter_common/vesselness_image_filter_common.h"
 
+//If you didn't want later people to copy and paste your library code,
+//you shouldn't have made the library structure so convoluted and hard to use.
+void convertSegmentImageCPU_(const cv::Mat&src, cv::Mat&dst){
+  cv::Mat temp1 = src.mul(cv::Scalar((179.0/255)/3.14159, 1.0));
+  cv::Mat temp2, temp3;
+  cv::convertScaleAbs(temp1, temp2, 255.0);
+  temp3.create(src.rows, src.cols, CV_8UC3);
+
+  cv::Mat tempHalf = cv::Mat::ones(src.rows, src.cols, CV_8UC1)*127;
+
+  cv::Mat in[] = {temp2, tempHalf};
+
+  // forming an array of matrices is an efficient operation,
+  // because the matrix data is not copied, only the headers
+  // rgba[0] -> bgr[2], rgba[1] -> bgr[1],
+  // rgba[2] -> bgr[0], rgba[3] -> alpha[0]
+  int from_to[] = {0, 0, 1, 1, 2, 2};
+
+  cv::mixChannels(in, 2, &temp3, 1, from_to, 3);
+  cv::cvtColor(temp3, dst, CV_HSV2BGR);
+}
+
 
 void VesselnessNodeBase::paramCallback(vesselness_image_filter::vesselness_params_Config &config, uint32_t level)
 {
@@ -117,11 +139,11 @@ void  VesselnessNodeBase::imgTopicCallback(const sensor_msgs::ImageConstPtr& msg
   // The result is outputImage.
   // Publish this output
   // Fill in the headers and encoding type
-  cv_Out.image = outputImage_;
+  convertSegmentImageCPU_(outputImage_, cv_Out.image);
   // cv_Out.header =  cv_ptrIn->header;
 
   // only publish if the image type is reconized.
-  bool publish(false);
+  bool publish(true);
   if (outputChannels_ == 1)
   {
     cv_Out.encoding = std::string("32FC1");
@@ -136,6 +158,8 @@ void  VesselnessNodeBase::imgTopicCallback(const sensor_msgs::ImageConstPtr& msg
   {
     ROS_INFO("The output is not properly set up");
   }
+  
+   cv_Out.encoding = std::string("bgr8");
 
   // publish the outputdata now.
   if (publish)

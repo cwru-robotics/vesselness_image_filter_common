@@ -46,11 +46,11 @@
  --> 
   
 <!-- -->
-    <node name="vessel_view_right" pkg="vesselness_image_filter" type="vesselness_image_viewer_cpu_node">
-         <remap from="image_thin" to="/stereo/right/image_vesselness" />
+    <node name="image_view_l" pkg="image_view" type="image_view">
+         <remap from="image" to="/stereo/right/image_vesselness" />
       </node>
-      <node name="vessel_view_left" pkg="vesselness_image_filter" type="vesselness_image_viewer_cpu_node">
-         <remap from="image_thin" to="/stereo/left/image_vesselness" />
+      <node name="image_view_r" pkg="image_view" type="image_view">
+         <remap from="image" to="/stereo/left/image_vesselness" />
       </node>
 
 
