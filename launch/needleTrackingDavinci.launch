@@ -13,10 +13,10 @@
       <remap from="image_thin" to="/stereo/left/image_vesselness"/> 
         <param name="beta" type="double" value="0.47"/>
         <param name="c" type="double" value="0.0015"/>
-        <param name="side_h" type="int" value="7"/>
-        <param name="side_p" type="int" value="5"/>
+        <param name="side_h" type="int" value="8"/>
+        <param name="side_p" type="int" value="8"/>
         <param name="variance_h" type="double" value="2.2"/>
-        <param name="variance_p" type="double" value="0.2"/>
+        <param name="variance_p" type="double" value="0.5"/>
     </node>
         
      
@@ -25,10 +25,10 @@
       <remap from="image_thin" to="/stereo/right/image_vesselness"/>
         <param name="beta" type="double" value="0.47"/>
         <param name="c" type="double" value="0.0015"/>
-        <param name="side_h" type="int" value="7"/>
-        <param name="side_p" type="int" value="5"/>
+        <param name="side_h" type="int" value="8"/>
+        <param name="side_p" type="int" value="8"/>
         <param name="variance_h" type="double" value="2.2"/>
-        <param name="variance_p" type="double" value="0.2"/> 
+        <param name="variance_p" type="double" value="0.5"/> 
     </node>
   
  <!-- OLD 
